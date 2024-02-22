@@ -94,7 +94,7 @@ jobs:
           $ref = $env:GITHUB_REF
           $NSIS_VERSION=$ref.Replace('refs/tags/v','')
           $TARBALL_NAME="nsis-${NSIS_VERSION}-src.tar.bz2"
-          Invoke-WebRequest -Uri "https://nchc.dl.sourceforge.net/project/nsis/NSIS%203/${NSIS_VERSION}/$TARBALL_NAME" -o "$TARBALL_NAME"
+          Invoke-WebRequest -Uri "https://nchc.dl.sourceforge.net/project/nsis/NSIS%203/${NSIS_VERSION}/$TARBALL_NAME" -OutFile "$TARBALL_NAME"
 
       - name: Unarchive nsis source code
         run: |
