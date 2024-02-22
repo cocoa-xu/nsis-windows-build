@@ -89,18 +89,18 @@ jobs:
             ./nsis-${{ env.ZLIB_VERSION}}.tar.bz2
 
       - name: Download latest nsis source code
-        shell: bash
         if: steps.cache-nsis-src.outputs.cache-hit != 'true'
         run: |
-          NSIS_VERSION=${GITHUB_REF##*/v}
-          TARBALL_NAME="nsis-${NSIS_VERSION}-src.tar.bz2"
-          curl -fSL "https://prdownloads.sourceforge.net/nsis/${TARBALL_NAME}?download" -o "$TARBALL_NAME"
+          $ref = $env:GITHUB_REF
+          $NSIS_VERSION=$ref.Replace('refs/tags/v','')
+          $TARBALL_NAME="nsis-${NSIS_VERSION}-src.tar.bz2"
+          Invoke-WebRequest -Uri "https://nchc.dl.sourceforge.net/project/nsis/NSIS%203/${NSIS_VERSION}/$TARBALL_NAME" -o "$TARBALL_NAME"
 
       - name: Unarchive nsis source code
-        shell: bash
         run: |
-          NSIS_VERSION=${GITHUB_REF##*/v}
-          TARBALL_NAME="nsis-${NSIS_VERSION}-src.tar.bz2"
+          $ref = $env:GITHUB_REF
+          $NSIS_VERSION=$ref.Replace('refs/tags/v','')
+          $TARBALL_NAME="nsis-${NSIS_VERSION}-src.tar.bz2"
           tar -xf "$TARBALL_NAME"
 
       - name: Install Dependencies
@@ -135,9 +135,9 @@ jobs:
           $ref = $env:GITHUB_REF
           $NSIS_VERSION=$ref.Replace('refs/tags/v','')
 
-          $ZIPFILE=(Get-ChildItem -Path . -Filter "nsis-$NSIS_VERSION*.zip" -Depth 0 -File).FullName
+          $ZIPFILE=(Get-ChildItem -Path . -Filter "nsis*.zip" -Depth 0 -File).FullName
           Expand-Archive -Path $ZIPFILE
-          $UNARCHIVED_DIR=(Get-ChildItem -Path . -Filter "nsis-$NSIS_VERSION" -Depth 0 -Directory).FullName
+          $UNARCHIVED_DIR=(Get-ChildItem -Path . -Filter "nsis-*" -Depth 0 -Directory).FullName
 
           Remove-Item -LiteralPath artifacts -Force -Recurse -ErrorAction SilentlyContinue
           New-Item -ItemType Directory -Path artifacts -Force
