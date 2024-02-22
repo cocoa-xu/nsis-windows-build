@@ -97,10 +97,19 @@ jobs:
           Invoke-WebRequest -Uri "https://nchc.dl.sourceforge.net/project/nsis/NSIS%203/${NSIS_VERSION}/$TARBALL_NAME" -OutFile "$TARBALL_NAME"
 
       - name: Unarchive nsis source code
+        if: startsWith(matrix.pair.arch, 'aarch64')
         run: |
           $ref = $env:GITHUB_REF
           $NSIS_VERSION=$ref.Replace('refs/tags/v','')
           $TARBALL_NAME="nsis-${NSIS_VERSION}-src.tar.bz2"
+          tar -xf "$TARBALL_NAME"
+
+      - name: Unarchive nsis source code
+        if: startsWith(matrix.pair.arch, 'x86_64')
+        shell: bash
+        run: |
+          NSIS_VERSION=${GITHUB_REF##*/v}
+          TARBALL_NAME="nsis-${NSIS_VERSION}-src.tar.bz2"
           tar -xf "$TARBALL_NAME"
 
       - name: Install Dependencies
