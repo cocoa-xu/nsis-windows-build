@@ -135,7 +135,7 @@ jobs:
           $ref = $env:GITHUB_REF
           $NSIS_VERSION=$ref.Replace('refs/tags/v','')
 
-          $ZIPFILE=(Get-ChildItem -Path . -Filter "nsis*.zip" -Depth 0 -File).FullName
+          $ZIPFILE=(Get-ChildItem -Path "nsis-${NSIS_VERSION}-src" -Filter "nsis*.zip" -File).FullName
           Expand-Archive -Path $ZIPFILE
           $UNARCHIVED_DIR=(Get-ChildItem -Path . -Filter "nsis-*" -Depth 0 -Directory).FullName
 
