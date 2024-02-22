@@ -114,6 +114,8 @@ jobs:
           $NSIS_VERSION=$ref.Replace('refs/tags/v','')
           $TARBALL_NAME="nsis-${NSIS_VERSION}-src.tar.bz2"
 
+          cd "nsis-${NSIS_VERSION}-src"
+
           if ("${{ matrix.pair.arch }}" -eq "x86_64") {
             $ml64_exe = (get-command ml64.exe).Path
             $ml_exe = $ml64_exe -replace "ml64.exe", "ml.exe"
@@ -125,7 +127,6 @@ jobs:
             ((Get-Content $system_sconscript) -join "`n") + "`n" | Set-Content -NoNewline $system_sconscript
           }
 
-          cd "nsis-${NSIS_VERSION}-src"
           echo "run scons"
           scons VERSION=${NSIS_VERSION} ZLIB_W32=C:\zlib-${{ env.ZLIB_VERSION }} APPEND_LIBPATH=C:\zlib-${{ env.ZLIB_VERSION }}\lib SKIPUTILS="NSIS Menu" TARGET_ARCH=${{ matrix.pair.target_arch }} dist-zip
 
