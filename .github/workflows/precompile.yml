@@ -44,6 +44,7 @@ jobs:
 
       - name: Setup Python
         uses: actions/setup-python@v4
+        if: startsWith(matrix.pair.arch, 'x86_64')
         with:
           python-version: '3.x'
 
