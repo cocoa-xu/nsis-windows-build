@@ -145,7 +145,7 @@ jobs:
           $NSIS_VERSION=$ref.Replace('refs/tags/v','')
 
           $ZIPFILE=(Get-ChildItem -Path "nsis-${NSIS_VERSION}-src" -Filter "nsis*.zip" -File).FullName
-          Expand-Archive -Path $ZIPFILE
+          Expand-Archive -Path $ZIPFILE -Force
           $UNARCHIVED_DIR=(Get-ChildItem -Path . -Filter "nsis-*" -Depth 0 -Directory).FullName
 
           Remove-Item -LiteralPath artifacts -Force -Recurse -ErrorAction SilentlyContinue
