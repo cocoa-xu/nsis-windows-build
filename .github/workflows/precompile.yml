@@ -146,7 +146,7 @@ jobs:
 
           $ZIPFILE=(Get-ChildItem -Path "nsis-${NSIS_VERSION}-src" -Filter "nsis*.zip" -File).FullName
           Expand-Archive -Path $ZIPFILE -Force
-          $UNARCHIVED_DIR=(Get-ChildItem -Path . -Filter "nsis-*" -Depth 0 -Directory).FullName
+          $UNARCHIVED_DIR=(Get-ChildItem -Path . -Filter "nsis-${NSIS_VERSION}${{ matrix.pair.target_arch }}" -Depth 0 -Directory).FullName
 
           Remove-Item -LiteralPath artifacts -Force -Recurse -ErrorAction SilentlyContinue
           New-Item -ItemType Directory -Path artifacts -Force
